@@ -2,7 +2,7 @@
 NRO update tu goi my pack group tinfoil hac am
 🛠 CÁC BƯỚC THỰC HIỆN:
 Bước 1: Chạy ứng dụng trên Switch
-Giữ nút R và mở một Game bất kỳ để vào Homebrew Menu với quyền Full RAM.
+Giữ nút R và mở một Game bất kỳ để vào Homebrew Menu với quyền Full RAM ( giữ R mở 1 app bất kỳ ).
 
 Tìm và mở ứng dụng My Pack Updater.
 
