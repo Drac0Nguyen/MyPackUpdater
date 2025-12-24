@@ -1,26 +1,132 @@
-🛠 DRACO ULTIMATE UPDATER (V1.0) Công cụ "Tất cả trong một" dành cho anh em Group Tinfoil Hắc Ám.
-📖 HƯỚNG DẪN CHI TIẾT Bước 1: Khởi động với quyền Full RAM (Quan trọng!) BẮT BUỘC: Giữ nút (R) và mở một Game bất kỳ để vào Homebrew Menu.
-Tìm và mở ứng dụng Draco Updater.
-Lưu ý: Tuyệt đối không mở qua Album để tránh lỗi Crash khi đang tải file nặng.
-Bước 2: Các lựa chọn nhiệm vụ
-CẬP NHẬT MY PACK (Dropbox) Dành cho anh em dùng bộ Pack tinh chỉnh riêng của Group.
-Cách làm: Chọn mục [1] -> Chờ tải xong -> Nhấn (+) để Reboot vào Hekate.
-Thực hiện: Vào Payloads -> TegraExplorer.bin -> Chạy autorun.te.
-CẬP NHẬT ATMOSPHERE (Chuyên sâu) Tải trực tiếp bản sạch từ GitHub của Atmosphere-NX.
-Cách làm: Chọn mục [2] -> Chọn phiên bản muốn tải -> Chờ tải xong và Reboot.
-CẬP NHẬT HEKATE & SYS-PATCH (Latest) Tự động lấy bản mới nhất ngay khi dev vừa phát hành.
-Cách làm: Chọn mục [3] hoặc [4]. File sẽ được chép đè thẳng vào thẻ nhớ.
-Lưu ý: Sau khi xong hãy Reboot để Payload mới có hiệu lực.
-TẢI FIRMWARE (Dùng cho Daybreak) Cách làm: Chọn mục [6] -> Chọn FW (Ví dụ 19.0.0) -> Nhấn (A) để tải.
-Cài đặt: Sau khi xong, nhấn (+) để ra Home Menu -> Mở Album -> Daybreak -> Chọn folder /FW_Update.
-🎮 ĐIỀU KHIỂN & TÍNH NĂNG THÔNG MINH D-Pad: Di chuyển lên xuống trong menu.
-Nút (A): Xác nhận thực hiện nhiệm vụ.
-Nút (B): Quay lại Menu chính (App sẽ tự động quét sạch Log cũ để màn hình luôn đẹp).
-Nút (+): * Reboot vào Hekate (Nếu vừa update Pack/Atmosphere/Hekate).
-Thoát ra Home Menu (Nếu vừa tải Firmware/Tinfoil).
-⚠️ LƯU Ý AN TOÀN Dung lượng: Thẻ nhớ nên trống khoảng 2GB vì file Firmware khá nặng.
-Điểm đặc biệt: App sẽ tự động xóa folder /atmosphere/contents để dọn sạch rác/themes cũ, giúp máy khởi động không bao giờ bị lỗi Fatal.
-Battery: Đảm bảo pin trên 30% khi cài FW qua Daybreak.
-Phát triển bởi: Draco
-Cộng đồng: Group Tinfoil Hắc Ám
-Chúc anh em có những giây phút trải nghiệm Game tuyệt vời!
+# DRACO ULTIMATE UPDATER (V1.0)
+
+All-in-One Updater cho Nintendo Switch CFW  
+Phục vụ cộng đồng Group Tinfoil Hắc Ám
+
+---
+
+## GIỚI THIỆU
+
+Draco Ultimate Updater là ứng dụng Homebrew hỗ trợ:
+- Cập nhật Pack tinh chỉnh của Group
+- Cập nhật Atmosphere (bản sạch)
+- Cập nhật Hekate & Sys-Patch (mới nhất)
+- Tải Firmware để cài qua Daybreak
+- Tự động dọn rác, giảm lỗi Fatal khi boot
+
+---
+
+## YÊU CẦU BẮT BUỘC
+
+- Máy đã cài CFW (Atmosphere)
+- Thẻ nhớ trống tối thiểu 2GB
+- Pin trên 30% khi cài Firmware
+- BẮT BUỘC chạy Homebrew bằng Full RAM
+
+---
+
+## CÁCH MỞ APP (QUAN TRỌNG)
+
+### ĐÚNG
+1. Giữ nút (R)
+2. Mở một game bất kỳ
+3. Vào Homebrew Menu
+4. Chạy Draco Updater
+
+### SAI
+- Không mở qua Album  
+- Mở Album dễ crash khi tải file dung lượng lớn
+
+---
+
+## DANH SÁCH CHỨC NĂNG
+
+### [1] UPDATE MY PACK (Dropbox)
+Dành cho Pack tinh chỉnh riêng của Group
+
+Thao tác:
+- Chọn [1]
+- Chờ tải hoàn tất
+- Nhấn (+) để Reboot vào Hekate
+
+Thực hiện tiếp trong Hekate:
+---
+
+### [2] UPDATE ATMOSPHERE (Advanced)
+- Tải bản sạch chính chủ từ GitHub Atmosphere-NX
+
+Thao tác:
+- Chọn [2]
+- Chọn phiên bản cần tải
+- Chờ xong → Reboot
+
+---
+
+### [3] UPDATE HEKATE (Latest)
+- Tự động tải phiên bản mới nhất
+
+Thao tác:
+- Chọn [3]
+- File được chép đè trực tiếp vào thẻ nhớ
+- Reboot để payload mới có hiệu lực
+
+---
+
+### [4] UPDATE SYS-PATCH (Latest)
+- Luôn lấy bản mới nhất từ Dev
+
+Thao tác:
+- Chọn [4]
+- Reboot sau khi hoàn tất
+
+---
+
+### [6] DOWNLOAD FIRMWARE (For Daybreak)
+
+Tải Firmware:
+- Chọn [6]
+- Chọn phiên bản (VD: 19.0.0)
+- Nhấn (A) để tải
+
+Cài đặt Firmware:
+---
+
+## ĐIỀU KHIỂN
+
+| Phím | Chức năng |
+|-----|-----------|
+| D-Pad | Di chuyển menu |
+| A | Xác nhận |
+| B | Quay về menu chính (tự xóa log cũ) |
+| + | Reboot Hekate / Thoát Home Menu |
+
+---
+
+## TÍNH NĂNG THÔNG MINH
+
+- Tự động xóa:
+Giúp tránh lỗi Fatal, xung đột sysmodule/theme cũ và boot ổn định hơn.
+
+---
+
+## LƯU Ý QUAN TRỌNG
+
+- Không tắt máy khi đang tải
+- Không tháo thẻ nhớ khi app đang chạy
+- Luôn Reboot sau khi update Atmosphere / Hekate
+- Firmware chỉ cài qua Daybreak
+
+---
+
+## THÔNG TIN PHÁT TRIỂN
+
+- Developer: Draco
+- Community: Group Tinfoil Hắc Ám
+
+---
+
+## DISCLAIMER
+
+- Công cụ phục vụ CFW / Homebrew
+- Người dùng tự chịu trách nhiệm khi sử dụng
+- Không hỗ trợ máy OFW hoặc chưa hack
