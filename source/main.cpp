@@ -20,6 +20,39 @@ struct FWRelease { std::string name; std::string url; };
 FWRelease fw_list[30]; 
 int total_found = 0;
 
+bool startupChecks() {
+    AppletType at = appletGetAppletType();
+    if (at != AppletType_Application && at != AppletType_SystemApplication) {
+        printf("\x1b[41m[CANH BAO]\x1b[0m Dang chay o Applet Mode (RAM thap).\n");
+        printf("Vui long giu nut [R] khi mo Game bat ky de vao app.\n");
+        printf("\nNhan (+) de thoat...");
+        return false;
+    }
+
+    Result rc = nifmInitialize(NifmServiceType_User);
+    if (R_FAILED(rc)) return false;
+
+    bool hasNet = false;
+    NifmInternetConnectionStatus status;
+    
+    rc = nifmGetInternetConnectionStatus(NULL, NULL, &status);
+    
+    if (R_SUCCEEDED(rc) && status == NifmInternetConnectionStatus_Connected) {
+        hasNet = true;
+    }
+
+    nifmExit(); // Luôn luôn exit sau khi check xong để giải phóng service
+
+    if (!hasNet) {
+        printf("\x1b[41m[LOI]\x1b[0m Khong co ket noi Internet/WiFi.\n");
+        printf("Vui long ket noi mang truoc khi su dung.\n");
+        printf("\nNhan (+) de thoat...");
+        return false;
+    }
+    
+    return true;
+}
+
 void deleteRecursive(const char* path) {
     DIR* d = opendir(path);
     if (!d) return;
@@ -63,10 +96,16 @@ void decompressAndDistribute(const char* zipPath, bool isMyPack, const char* tar
         unzGetCurrentFileInfo(uf, NULL, filename, sizeof(filename), NULL, 0, NULL, 0);
         char targetPath[1024];
         
-        if (isMyPack && (strstr(filename, "package3") || strstr(filename, "stratosphere.romfs")))
+        if (isMyPack && (strstr(filename, "package3") || strstr(filename, "stratosphere.romfs"))) {
             snprintf(targetPath, 1024, "%s/%s", STAGING_DIR, filename);
-        else
+        } 
+        else if (!isMyPack && strstr(filename, "hekate_ctcaer") && strstr(filename, ".bin")) {
+            snprintf(targetPath, 1024, "%s/payload.bin", targetRoot); 
+            printf("\x1b[34m[Doi ten]\x1b[0m %s -> payload.bin\n", filename);
+        } 
+        else {
             snprintf(targetPath, 1024, "%s/%s", targetRoot, filename);
+        }
 
         printf("\x1b[32m[%3.1f%%]\x1b[0m Dang chep: %s\n", (float)(i+1)/gi.number_entry*100, filename);
         consoleUpdate(NULL);
@@ -126,23 +165,40 @@ void fetchGitHubReleases(const char* repo) {
 
 std::string getLatestZip(const char* repo) {
     CURL *curl = curl_easy_init();
-    std::string readBuffer; std::string res = "";
+    std::string readBuffer; 
+    std::string res = "";
+    
     if(curl) {
         struct curl_slist *headers = NULL;
         headers = curl_slist_append(headers, "User-Agent: DracoUpdater");
+        
         curl_easy_setopt(curl, CURLOPT_URL, (std::string("https://api.github.com/repos/") + repo + "/releases/latest").c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        
         if(curl_easy_perform(curl) == CURLE_OK) {
             size_t pos = readBuffer.find("\"browser_download_url\":\"");
+            std::string fallbackUrl = "";
+
             while(pos != std::string::npos) {
-                size_t u_start = pos + 24; size_t u_end = readBuffer.find("\"", u_start);
+                size_t u_start = pos + 24; 
+                size_t u_end = readBuffer.find("\"", u_start);
                 std::string url = readBuffer.substr(u_start, u_end - u_start);
-                if(url.find(".zip") != std::string::npos) { res = url; break; }
+
+                // Ưu tiên bản ZIP có chứa Nyx (dành cho Hekate)
+                if(url.find(".zip") != std::string::npos) {
+                    if(url.find("Nyx") != std::string::npos || url.find("nyx") != std::string::npos) {
+                        res = url; 
+                        break; 
+                    }
+                    fallbackUrl = url;
+                }
                 pos = readBuffer.find("\"browser_download_url\":\"", u_end);
             }
+            
+            if(res.empty()) res = fallbackUrl;
         }
         curl_easy_cleanup(curl);
     }
@@ -178,7 +234,6 @@ int showSelectionMenu(const char* title, PadState* pad) {
         if(k & HidNpadButton_AnyDown) sel = (sel+1)%total_found;
         if(k & HidNpadButton_A) return sel;
         if(k & HidNpadButton_B) { 
-            // Khi thoát menu chọn cũng phải xóa sạch để menu chính hiện ra đẹp
             printf("\x1b[2J\x1b[H"); 
             consoleClear(); 
             return -1; 
@@ -191,8 +246,23 @@ int showSelectionMenu(const char* title, PadState* pad) {
 int main(int argc, char** argv) {
     consoleInit(NULL);
     socketInitializeDefault();
-    PadState pad; padConfigureInput(1, HidNpadStyleSet_NpadStandard); padInitializeDefault(&pad);
 
+    PadState pad; 
+    padConfigureInput(1, HidNpadStyleSet_NpadStandard); 
+    padInitializeDefault(&pad);
+
+    bool canRun = startupChecks();
+    if (!canRun) {
+        while (appletMainLoop()) {
+            padUpdate(&pad);
+            if (padGetButtonsDown(&pad) & HidNpadButton_Plus) break;
+            consoleUpdate(NULL);
+        }
+        socketExit();
+        nifmExit();
+        consoleExit(NULL);
+        return 0;
+    }
     bool exitApp = false;
     while (appletMainLoop() && !exitApp) {
         int mainSelection = 0; int modeChosen = -1; bool taskDone = false;
