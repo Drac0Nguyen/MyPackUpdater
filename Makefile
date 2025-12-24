@@ -1,8 +1,8 @@
 TARGET      := MyPackUpdater
 APP_TITLE   := MyPack Auto Updater
 APP_AUTHOR  := Draco
-APP_VERSION := 1.0.0
-
+APP_VERSION := 1.0.1
+APP_ICON := $(CURDIR)/icon.jpg
 ifeq ($(strip $(DEVKITPRO)),)
     $(error "Please set DEVKITPRO in your environment. export DEVKITPRO=/c/devkitPro")
 endif
@@ -46,8 +46,17 @@ clean:
 	@rm -fr $(BUILD) $(TARGET).nro $(TARGET).elf
 
 else
-$(OUTPUT).nro   : $(OUTPUT).elf
+
+$(OUTPUT).nro   : $(OUTPUT).elf $(OUTPUT).nacp
+	@echo Creating NRO...
+	@elf2nro $< $@ --icon=$(TOPDIR)/icon.jpg --nacp=$(OUTPUT).nacp
+
+$(OUTPUT).nacp  :
+	@echo Creating NACP Metadata...
+	@nacptool --create "$(APP_TITLE)" "$(APP_AUTHOR)" "$(APP_VERSION)" $@
+
 $(OUTPUT).elf   : $(OFILES)
 	@echo Linking...
 	@$(CXX) $(LDFLAGS) $(OFILES) $(LIBS) -o $@
+
 endif
